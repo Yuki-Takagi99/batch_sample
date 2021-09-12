@@ -1,10 +1,12 @@
 class RanksUpdater
   def update_all
-    # 現在のランキング情報をリセット
-    Rank.delete_all
+    Rank.transaction do
+      # 現在のランキング情報をリセット
+      Rank.delete_all
 
-    # ユーザーごとのスコア合計を降順に並べ替え、そこからランキング情報を再作成する
-    create_ranks
+      # ユーザーごとのスコア合計を降順に並べ替え、そこからランキング情報を再作成する
+      create_ranks
+    end
   end
 
   private
